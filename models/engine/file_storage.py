@@ -17,8 +17,8 @@ class FileStorage:
             results = {}
             
             for obj, value in FileStorage.__objects.items():
-                if isinstance(obj, cls):
-                    results.update(obj, value)
+                if isinstance(value, cls):
+                    results[obj] = value
             return results
 
     def new(self, obj):

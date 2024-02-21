@@ -43,16 +43,18 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         
-        my_dict = self.__dict__.copy()
-        if "_sa_instance_state" in my_dict:
-            del my_dict["_sa_instance_state"]
-        return my_dict
+        dictionary = {}
+        dictionary.update(self.__dict__)
+        dictionary.update({'__class__':
+                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary['created_at'] = self.created_at.isoformat()
+        dictionary['updated_at'] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary:
+            del dictionary["_sa_instance_state"]
+        return dictionary
 
     def delete(self):
         """Deletes the current instance from storage (models.storage)"""
         from models import storage
         
-        key = f"{self.__class__.__name__}.{self.id}"
-        
-        if key in storage.all():
-            storage.delete(self)
+        storage.delete(self)
