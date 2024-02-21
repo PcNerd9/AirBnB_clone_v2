@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
 
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
-            storage.rollback()
+            return
 
         new_instance = HBNBCommand.classes[class_name]()
         key_value = split_args[1].strip(" ")
@@ -154,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
                 new_instance.save()
                 print(new_instance.id)
         except:
-            new_instance.rollback()
+            pass
 
     def help_create(self):
         """ Help information for the create method """
