@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         try:
                             Value = int(Value)
-                        except:
+                        except ValueError:
                             continue
                 setattr(new_instance, key_v[0], Value)
         except Exception as e:
@@ -233,13 +233,13 @@ class HBNBCommand(cmd.Cmd):
             all_object = storage.all()
             for k, v in all_object.items():
                 if k.split('.')[0] == args:
+                    print("hey")
                     print_list.append(str(v))
         else:
             for k, v in storage.all():
                 print_list.append(str(v))
 
         print(print_list)
-
     def help_all(self):
         """ Help information for the all command """
         print("Shows all objects, or all of a class")

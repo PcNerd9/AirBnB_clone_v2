@@ -44,7 +44,7 @@ class DBStorage:
         from models.place import Place
         from models.review import Review
         objects = {}
-        classes = {'State': State, 'City': City}
+        classes = {'User': User, 'State': State, 'City': City, 'Amenity': Amenity, 'Place': Place, 'Review': Review}
         if cls == None:
             for class_name, class_obj in classes.items():
                 for obj in self.__session.query(class_obj).all():                  
