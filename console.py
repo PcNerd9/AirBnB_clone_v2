@@ -120,39 +120,20 @@ class HBNBCommand(cmd.Cmd):
             return
         split_args = args.split()
         class_name = split_args[0]
-        params = split_args[1:]
-        if class_name not in HBNBCommand.classes:
-            print("** clas doesn't exist **")
-            return
+        
+        new_instance = HBNBCommand.classes[class_name]()
+        key_value = args[2].strip(" ")
+        
+        key_val_list = key_value.split(" ")
         
         try:
-            new_instance = HBNBCommand.classes[class_name]()
-        except TypeError as e:
-            return
-        kwargs = {}
-        for param in params:
-            try:
-                if "=" in param:
-                    key, value = param.split('=', 1)
-                    value  = value.replace("_", " ")
-                    
-                    if value.startswith('"') and value.endswith('"'):
-                        value = value[1:-1].replace("\\", "")
-                    elif "." in value:
-                        try:                        
-                            value = float(value)
-                        except ValueError:
-                            continue
-                    else:
-                        try:
-                            value = int(float)
-                        except:
-                            continue
-                    setattr(new_instance, key, value)
-                else:
-                    continue
-            except ValueError:
-                continue
+            for key in key_val_list:
+                if ('=' in key):
+                    key_v = key.split('=')
+                    Value = key_v[1].replace("_", " ")
+                    setattr(new_instance, key, eval(Value))
+        except Exception as e:
+            pass
         new_instance.save()
         print(new_instance.id)
  
