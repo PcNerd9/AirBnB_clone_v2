@@ -6,6 +6,11 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
+place_amenity = Table('place_amenity', Base.metadata,
+    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False), 
+    extend_existing=True
+    )
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -21,17 +26,10 @@ class Place(BaseModel, Base):
     latitude = Column(Float, default=0)
     longitude = Column(Float, default=0)
     amenity_ids = []
-    
-    
-    place_amenity = Table('place_amenity', Base.metadata,
-    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False), 
-    extend_existing=True
-    )
 
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship('Review', back_populates='place', cascade='all, delete')
-        amenities = relationship('Amenity', secondary='place_amenity', viewonly=False)
+        amenities = relationship('Amenity', secondary=place_amenity, viewonly=False)
     else:
         @property
         def reviews(self):
@@ -56,7 +54,3 @@ class Place(BaseModel, Base):
             """ Setter attribute that handles adding Amenity.id to amenity_ids """
             if obj.__class__.__name__ == 'Amenity':
                 self.amenity_ids.append(obj.id)
-
-    amenities = relationship('Amenity', secondary='place_amenity')
-
-#Creating the association table
