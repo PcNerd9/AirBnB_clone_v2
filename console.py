@@ -232,7 +232,6 @@ class HBNBCommand(cmd.Cmd):
             all_object = storage.all()
             for k, v in all_object.items():
                 if k.split('.')[0] == args:
-                    print("hey")
                     print_list.append(str(v))
         else:
             for k, v in storage.all():
