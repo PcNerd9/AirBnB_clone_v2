@@ -17,8 +17,9 @@ def do_pack():
     day = datetime.now().day
     hour = datetime.now().hour
     minutes = datetime.now().minute
-    archive_name = "web_static_{}{}{}{}{}.tgz".format(
-            year, month, day, hour, minutes
+    seconds = datetime.now().second
+    archive_name = "web_static_{}{}{}{}{}{}.tgz".format(
+            year, month, day, hour, minutes, seconds
             )
     if isdir("version") is False:
         local("mkdir versions")
