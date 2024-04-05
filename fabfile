@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+"""
+a fab file to perform some configuration
+"""
+from fabric.api import local
+from datetime import datetime
+
+def do_pack():
+    year = datetime.now().year
+    month = datetime.now().month
+    day = datetime.now().day
+    hour = datetime.now().hour
+    minutes = datetime.now().minute
+    result = archive_name = "{}{}{}{}{}.tgz".format(year, month, day, hour, minutes)
+    local("tar -cvzf versions/{} ./web_static".format(archive_name))
+    if result.failed:
+        return None
+    else:
+        return archine_name
