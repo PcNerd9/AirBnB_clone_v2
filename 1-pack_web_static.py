@@ -6,6 +6,7 @@ from fabric.api import local
 from datetime import datetime
 from os.path import isdir
 
+
 def do_pack():
     """
     generates a .tgz from the content of the
@@ -16,11 +17,13 @@ def do_pack():
     day = datetime.now().day
     hour = datetime.now().hour
     minutes = datetime.now().minute
-    archive_name = "{}{}{}{}{}.tgz".format(year, month, day, hour, minutes)
+    archive_name = "web_static_{}{}{}{}{}.tgz".format(
+            year, month, day, hour, minutes
+            )
     if isdir("version") is False:
-        local("mkdir version")
-    result = local("tar -cvzf versions/web_static_{} ./web_static".format(archive_name))
+        local("mkdir versions")
+    result = local("tar -cvzf versions/{} web_static".format(archive_name))
     if result.failed:
         return None
     else:
-        return archive_name
+        return "versions/{}".format(archive_name)
