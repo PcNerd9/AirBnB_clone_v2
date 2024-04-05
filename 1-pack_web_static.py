@@ -2,7 +2,7 @@
 """
 a fab file to perform some configuration
 """
-from fab import local
+from fabric.api import local
 from datetime import datetime
 
 
