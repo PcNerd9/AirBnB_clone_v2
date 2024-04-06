@@ -21,7 +21,7 @@ def do_pack():
     archive_name = "web_static_{}{}{}{}{}{}.tgz".format(
             year, month, day, hour, minutes, seconds
             )
-    if exists("version") is False:
+    if exists("versions") is False:
         local("mkdir versions")
     result = local("tar -cvzf versions/{} web_static".format(archive_name))
     if result.failed:
