@@ -10,6 +10,9 @@ distribute_module = import_module("2-do_deploy_web_static")
 
 
 def deploy():
+    """
+    creates an distributes an archive to my web servers
+    """
     archive_file = archive_module.do_pack()
     if (not archive_file):
         return False
