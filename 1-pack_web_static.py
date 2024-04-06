@@ -4,7 +4,7 @@ a fab file to perform some configuration
 """
 from fabric.api import local
 from datetime import datetime
-from os.path import isdir
+from os.path import exists
 
 
 def do_pack():
@@ -21,7 +21,7 @@ def do_pack():
     archive_name = "web_static_{}{}{}{}{}{}.tgz".format(
             year, month, day, hour, minutes, seconds
             )
-    if isdir("version") is False:
+    if exists("version") is False:
         local("mkdir versions")
     result = local("tar -cvzf versions/{} web_static".format(archive_name))
     if result.failed:

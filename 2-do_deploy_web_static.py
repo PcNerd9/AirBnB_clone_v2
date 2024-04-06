@@ -16,10 +16,13 @@ def do_deploy(archive_path):
         return False
     try:
         filename = archive_path.split("/")[-1].split(".")[0]
-        location = "/data/web_static/releases/{}".format(filename)
+        location = "/data/web_static/releases/{}/".format(filename)
         put(archive_path, remote="/tmp/")
-        run("tar -xzvf archive_path -C {}".format(location))
+        run("mkdir -p {}".format(location))
+        run("tar -xzvf /tmp/{}.tgz -C {}".format(filename, location))
         run("rm -drf /tmp/{}.tgz".format(filename))
+        run("mv {}/web_static/* {}".format(location, location))
+        run("rm -drf {}/web_static".format(location))
         if (exists("/data/web_static/current")):
             run("rm -drf /data/web_static/current")
         run("ln -s {} /data/web_static/current".format(location))
