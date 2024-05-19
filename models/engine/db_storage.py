@@ -35,7 +35,7 @@ class DBStorage:
         self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
             
             
-    def all(self, cls=None):
+    def all(self,cls=None):
         """Query object from the database session"""
         from models.user import User
         from models.state import State
@@ -83,4 +83,6 @@ class DBStorage:
         metadata = MetaData()
         metadata.reflect(bind=self.__engine)
         metadata.drop_all(self.__engine)
-        
+
+    def close(self):
+        self.__session.remove()
