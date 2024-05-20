@@ -5,8 +5,11 @@ generates .tgz archive from the contents of the web_static
 """
 
 from fabric.api import local, run, put, env
-from datatime import datetime
+from datetime import datetime
 from os.path import exists
+
+env.hosts = ["100.26.254.81", "100.26.158.71"]
+env.user = "ubuntu"
 
 
 def do_pack():
@@ -30,10 +33,7 @@ def do_deploy(archive_path):
     distributes an archive file to my web servers
     """
 
-    env.hosts = ["100.26.254.81", "100.26.158.71"]
-    env.user = "ubuntu"
-
-    if not exists(archive_path):
+    if exists(archive_path) is False:
         return False
 
     remote_path = "/tmp/"
@@ -41,15 +41,12 @@ def do_deploy(archive_path):
     deploy_path = "/data/web_static/releases/{}".format(
             archive_name)
 
-    try:
-        put(local=archive_path, remote=remote_path)
-        run("mkdir -p {}".format(deploy_path))
-        run("tar -xzvf /tmp/{}.tgz -C {}".format(
-            archive_name, deploy_path))
+    put(archive_path, remote_path)
+    run("mkdir -p {}".format(deploy_path))
+    run("tar -xzvf /tmp/{}.tgz -C {}".format(
+        archive_name, deploy_path))
 
-        run("rm /tmp/{}.tgz".format(archive_name))
-        run("rm /data/web_static/current")
-        run("ln -sf {} /data/web_static/current".format(deploy_path))
-        return True
-    except Exception as e:
-        return False
+    run("rm /tmp/{}.tgz".format(archive_name))
+    run("rm /data/web_static/current")
+    run("ln -sf {} /data/web_static/current".format(deploy_path))
+    return True
