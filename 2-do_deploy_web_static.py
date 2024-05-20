@@ -35,7 +35,7 @@ def do_deploy(archive_path):
 
     if not exists(archive_path):
         return False
-   
+
     remote_path = "/tmp/"
     archive_name = archive_path.split("/")[-1].split(".")[0]
     deploy_path = "/data/web_static/releases/{}".format(
@@ -53,4 +53,3 @@ def do_deploy(archive_path):
         return True
     except Exception as e:
         return False
-    
