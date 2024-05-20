@@ -4,8 +4,9 @@
 generates .tgz archive from the contents of the web_static
 """
 
-from frabic.api import local
-from datatime import datetime
+from fabric.api import local
+from datetime import datetime
+
 
 def do_pack():
     """
@@ -16,7 +17,7 @@ def do_pack():
     """
 
     now = datetime.now()
-    filename = "web_static_{}.tgz".format(now.strtime("%Y%m%d%H%M%S"))
+    filename = "web_static_{}.tgz".format(now.strftime("%Y%m%d%H%M%S"))
     file = "./web_static"
     local("mkdir -p ./versions")
     local("tar -cvzf versions/{} {}".format(filename, file))
