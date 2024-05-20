@@ -1,55 +1,30 @@
 #!/usr/bin/python3
-
 """
-generates .tgz archive from the contents of the web_static
+a fabric file that distributes an archive to my web server
 """
 
-from fabric.api import local, run, put, env
-from datetime import datetime
+from fabric.api import run, local, put, env
 from os.path import exists
-
-env.hosts = ["100.26.254.81", "100.26.158.71"]
-env.user = "ubuntu"
-
-
-def do_pack():
-    """
-    generates a .tgz archive from the content of the
-    web_static file and save it into version folder
-    with the name of the archive been in the format
-    web_static_<year><month><day><hour><minute><second>.tgz
-    """
-
-    now = datetime.now()
-    filename = "web_static_{}.tgz".format(now.strtime("%Y%m%d%H%M%S"))
-    file = "./web_static"
-    local("mkdir -p ./versions")
-    local("tar -cvzf versions/{} {}".format(filename, file))
-    return (filename)
+env.hosts = ['54.236.25.152', '100.26.17.86']
 
 
 def do_deploy(archive_path):
     """
-    distributes an archive file to my web servers
+    distributes an archive to web servers and uncompress it
     """
-
     if exists(archive_path) is False:
         return False
-
     try:
-        remote_path = "/tmp/"
-        archive_name = archive_path.split("/")[-1].split(".")[0]
-        deploy_path = "/data/web_static/releases/{}".format(
-                archive_name)
-
-        put(archive_path, remote_path)
-        run("mkdir -p {}".format(deploy_path))
-        run("tar -xzf /tmp/{}.tgz -C {}".format(
-            archive_name, deploy_path))
-
-        run("rm /tmp/{}.tgz".format(archive_name))
-        run("rm -rdf  /data/web_static/current")
-        run("ln -sf {} /data/web_static/current".format(deploy_path))
+        filename = archive_path.split("/")[-1].split(".")[0]
+        location = "/data/web_static/releases/{}/".format(filename)
+        put(archive_path, "/tmp/")
+        run("mkdir -p {}".format(location))
+        run("tar -xzvf /tmp/{}.tgz -C {}".format(filename, location))
+        run("rm -drf /tmp/{}.tgz".format(filename))
+        run("mv {}/web_static/* {}".format(location, location))
+        run("rm -drf {}/web_static".format(location))
+        run("rm -drf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(location))
         return True
     except Exception as e:
         return False
