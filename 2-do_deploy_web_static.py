@@ -26,7 +26,7 @@ def do_deploy(archive_path):
         run("mv {}/web_static/* {}".format(location, location))
         run("rm -drf {}/web_static".format(location))
         run("rm -drf /data/web_static/current")
-        run("ln -sf {} /data/web_static/current".format(location))
+        run("ln -s {} /data/web_static/current".format(location))
         return True
     except Exception as e:
         return False
