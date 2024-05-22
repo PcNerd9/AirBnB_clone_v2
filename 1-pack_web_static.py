@@ -21,4 +21,4 @@ def do_pack():
     file = "./web_static"
     local("mkdir -p ./versions")
     local("tar -cvzf versions/{} {}".format(filename, file))
-    return (filename)
+    return ("versions/{}".format(filename))
