@@ -11,12 +11,16 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    
+ 
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         cities = relationship('City', cascade='all, delete', backref='state')
     else:
         @property
         def cities(self):
+            """
+            return the list of City objects from storage
+            linked to the current State
+            """
             from models.city import City
             city = []
             for values in models.storage.all(City).values():

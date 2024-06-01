@@ -85,4 +85,8 @@ class DBStorage:
         metadata.drop_all(self.__engine)
 
     def close(self):
+        """
+        close all sessions
+        """
         self.__session.remove()
+
