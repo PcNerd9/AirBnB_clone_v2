@@ -19,7 +19,7 @@ class DBStorage:
         MySQL_host = os.environ.get("HBNB_MYSQL_HOST","localhost")
         MySQL_database = os.environ.get("HBNB_MYSQL_DB")
         
-        connection_url = f"mysql+mysqldb://{MySQL_user}:{MySQL_password}@{MySQL_host}/{MySQL_database}"
+        connection_url = f"mysql+mysqldb://{MySQL_user}:{MySQL_password}@{MySQL_host}/{MySQL_database}?charset=latin1"
         
         if os.environ.get("HBNB_ENV") == "test":
                 self.drop_all_tables()
